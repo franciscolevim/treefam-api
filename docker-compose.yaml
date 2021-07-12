@@ -1,11 +1,53 @@
 version: "3.9"
 services:
+
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: treefam-rest
+    restart: always
+    ports:
+      - "7000:4000"
     environment:
       FLASK_APP: "app/main"
       FLASK_RUN_HOST: "0.0.0.0"
-      FLASK_RUN_PORT: "7000"
+      FLASK_RUN_PORT: "4000"
       FLASK_ENV: "development"
     volumes:
       - .:/usr/src/treefam-api:rw
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: jerais1234
+    ports:
+      - "27017:27017"
+    networks: 
+      - MONGO
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: jerais1234
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: "27017"
+    ports:
+      - "8081:8081"
+    networks:
+      - MONGO
+    depends_on:
+      - mongo
+    
+networks:
+  MONGO:
+    name: MONGO
+
+volumes:
+  schemas: {}
