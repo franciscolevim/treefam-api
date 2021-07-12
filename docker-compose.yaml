@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    environment:
+      FLASK_APP: "app/main"
+      FLASK_RUN_HOST: "0.0.0.0"
+      FLASK_RUN_PORT: "7000"
+      FLASK_ENV: "development"
+    volumes:
+      - .:/usr/src/treefam-api:rw
