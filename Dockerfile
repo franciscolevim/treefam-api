@@ -7,6 +7,7 @@ WORKDIR /usr/src/treefam-api
 COPY requirements.txt .
 
 # Install the dependencies
+RUN pip install --upgrade pip 
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the Flask app code to the working directory
